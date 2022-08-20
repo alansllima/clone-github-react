@@ -20,8 +20,7 @@ const Profile: React.FC = () => {
 
 const{username} = useParams();
 
-const [user,setUser] = useState<APIUser>();
-const [repos,setRepos] = useState<APIRepo[]>(); 
+//const [username,setUsername] = useState();
 const [data,setData] = useState<IData>();
 
 useEffect(()=>{
@@ -42,9 +41,7 @@ useEffect(()=>{
 if(data?.error){
   return <h1>{data.error}</h1>
 }
-if(!data){
-  return <h2>busque por um usuario</h2>
-}
+
 if(!data?.user || !data.repos){
   return<h1>Loading...</h1>
 }
@@ -74,14 +71,14 @@ console.log('renderizou')
     <LeftSide>
       <ProfileData
       username={data.user.login}
-      name={'Tchenhazinha'}
-      avatarUrl={'https://avatars.githubusercontent.com/u/12252804?v=4'}
+      name={data.user.name}
+      avatarUrl={data.user.avatar_url}
       followers={data.user.followers}
       following={data.user.following}
-      company={'Keeggo sa d asds sa  as s'}
-      location={'Sao paulo, brazil'}
-      email={'alan@gmail.co s s dasd s m'}
-      blog={'alan.com.br'}
+      company={data.user.company}
+      location={data.user.location}
+      email={data.user.email}
+      blog={data.user.blog}
       />
     </LeftSide>
     <RightSide>
