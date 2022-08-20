@@ -6,11 +6,7 @@ data : APIRepo[];
 headers?: Object;
 status?: number;
 }
-interface IRepoDetails{
-    id: number ;
-    name: string;
-    description : string;
-}
+
 export const getAll  = async () : Promise<IReposList> => {
    // user: string, page : string, limit : string
    const user = 'alansllima'

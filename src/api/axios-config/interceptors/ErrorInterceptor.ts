@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import { IData } from "../../../@types";
 
 export const errorInterceptor = (error : AxiosError) => {
     if(error.message ==='Network Error'){
