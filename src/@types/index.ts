@@ -11,6 +11,7 @@ export interface APIUser{
     blog?: string;
 }
 export interface APIRepo{
+    id:number;
     name: string;
     owner:{
         login: string;
@@ -21,3 +22,10 @@ export interface APIRepo{
     language?: string;
     description?: string;
 }
+
+export interface IData{
+    user?: APIUser;
+    repos?:APIRepo[];
+    error?: string;
+  
+  }

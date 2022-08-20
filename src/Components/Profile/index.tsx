@@ -6,61 +6,49 @@ import ProfileData from '../../Components/ProfileData';
 import RepoCard from '../RepoCard';
 import RandomCalendar from '../RandomCalendar';
 import { APIRepo, APIUser } from '../../@types';
+import {UserService} from '../../service/users/UserService'
+import {RepoService} from '../../service/repos/RepoService'
 
-interface Data{
-  user?: APIUser;
-  repos?: APIRepo[];
-  error? : string;
+interface IData{
+  user?: APIUser,
+  repos?:APIRepo[],
+  error?: string
+
 }
 
 const Profile: React.FC = () => {
 
 const{username} = useParams();
 
-/* const [user,setUser] = useState<User>();
-const [repos,setRepos] = useState<User>(); */
-const [data,setData] = useState<Data>();
+const [user,setUser] = useState<APIUser>();
+const [repos,setRepos] = useState<APIRepo[]>(); 
+const [data,setData] = useState<IData>();
 
 useEffect(()=>{
   Promise.all([
-    fetch(`https://api.github.com/users/${username}`),  
-    fetch(`https://api.github.com/users/${username}/repos`)
-  ]).then(async(responses)=>{
-    const[userResponse, reposResponse]= responses;
-
-    if(userResponse.status == 404){
-      setData({error:'User not found!'})
-      return
-    }
-    if(reposResponse.status == 404){
-      setData({error:'Repos not found!'})
-      return
-    }
-
-    const user = await userResponse.json();
-    const repos = await reposResponse.json();
-    
-    const shuffledRepos = repos.sort(()=> 0.50 - Math.random());
-    const slicedRepos = shuffledRepos.slice(0,2);
-     setData({user, repos : slicedRepos}) 
-     
-
+    UserService.getUser(username),    
+    RepoService.getAll()  
+  ]).then(async (responses)=>{
+    const[userResponse, reposResponse]= responses;    
+    setData({user: userResponse, repos : reposResponse.data})
+      
+  },(erro)=>{
+    console.log(erro)
+    setData(erro)
   })
-
-},[username]);
+  
+  },[username])
 
 if(data?.error){
   return <h1>{data.error}</h1>
 }
+if(!data){
+  return <h2>busque por um usuario</h2>
+}
 if(!data?.user || !data.repos){
   return<h1>Loading...</h1>
 }
-
-/* console.log(user)
-console.log(repos) */
 console.log('renderizou')
-
-
 
   const TabContent = () => (
     <div className="content">
@@ -106,7 +94,7 @@ console.log('renderizou')
       <div>{data.repos.map((item) =>( 
        
       <RepoCard
-      key={item.forks}
+      key={item.id}
       username={item.owner.login}
       reponame={item.name}
       description={item.description}

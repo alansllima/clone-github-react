@@ -1,7 +1,8 @@
+import { APIRepo } from "../../@types";
 import {Api} from "../../api/axios-config";
 
 type IReposList = { 
-data : IRepoDetails[];
+data : APIRepo[];
 headers?: Object;
 status?: number;
 }
@@ -10,12 +11,13 @@ interface IRepoDetails{
     name: string;
     description : string;
 }
-export const getAll  = async () : Promise<IReposList | Error> => {
+export const getAll  = async () : Promise<IReposList> => {
    // user: string, page : string, limit : string
    const user = 'alansllima'
-    const urlRelativa =`/users/${user}/reposs`;   
-    try {
-        const {data, headers, status} = await Api.get(urlRelativa)         
+    const urlRelativa =`/users/${user}/repos`;   
+    
+        const {data, headers, status} = await Api.get(urlRelativa)  
+        console.log(data)       
         if(data){
           return({
             data,
@@ -23,36 +25,12 @@ export const getAll  = async () : Promise<IReposList | Error> => {
             status,
           })
         }
-       return new Error('Não foi possivel conectar com o repositorio')
-
-    } catch (error) {
-        return new Error((error as {message: string}).message ||'Não foi possivel conectar com o repositorio 2')
-    }
-
-
+        return({
+          data,
+          headers,
+          status,
+        }) 
 }
-
-export const getById  = async () : Promise<IReposList | Error> => {
-    // user: string, page : string, limit : string
-    const user = 'alansllima'
-     const urlRelativa =`/users/${user}/repos`;   
-     try {
-         const {data, headers, status} = await Api.get(urlRelativa)              
-         if(data){
-           return({
-             data,
-             headers,
-             status,
-           })
-         }
-        return new Error('Não foi possivel conectar com o repositorio')
- 
-     } catch (error) {
-         return new Error('Não foi possivel conectar com o repositorio 2')
-     }
- 
- 
- }
 
 export const RepoService = {
     getAll,
