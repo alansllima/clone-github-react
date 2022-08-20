@@ -1,41 +1,11 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useTheme } from 'styled-components';
 import { APIRepo } from '../../@types';
 import { RepoService } from '../../service/repos/RepoService';
 import { Container, Header, Main , Aside, Footer } from './styles';
 
-// import { Container } from './styles';
-
-
-interface Data{ 
-  repos: Repo[];
-}
-interface DataUser{ 
-  data: User;
-}
-interface Repo{ 
-  id: number ;
-  name: string;
-  description : string;
-}
-interface User{ 
-  id: number ;
-  login: string;  
-}
-interface IResult{ 
-  data: IData;
-  status: string;  
-}
-
-interface IData{ 
-  repos: Repo[];    
-}
-
 const Grid: React.FC = () => {
   const [repos , setRepos] = useState<APIRepo[]>([]);
   const[search, setSearch] = useState('');
-  const[user, setUser] = useState<User>();
 
 useEffect( ()=>{
 RepoService.getAll()
@@ -56,9 +26,8 @@ const filteredData = search.length > 0 ?repos.filter(filter => filter.name.toLow
   return (
   <Container>
     <div className='container'>
-    <Header>
-      <h1>{user?.login}</h1>
-    </Header>
+    <Header/>      
+   
     <Main>
       <input 
       placeholder='---Buscar---'     

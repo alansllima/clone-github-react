@@ -19,7 +19,7 @@ console.log("APP " + themeName)
     <BrowserRouter> 
     <Header themeName={themeName} setThemeName={setThemeName} />
     <Routes>
-      <Route path='/' element={<Profile/>}/>
+      <Route path='/' element={<h1>Search for a username</h1>}/>
       <Route path='/:username' element={<Profile/>}/>
       <Route path='/:username/:repo' element={<Repo/>}/>
       <Route path='/grid' element={<Grid/>}/>
